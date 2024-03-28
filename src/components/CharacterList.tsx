@@ -1,14 +1,14 @@
 import { Character } from "@/types/character";
 
 const CharacterView = ({ character }: { character: Character }) => {
-  return <div key={character._id}>
+  return <div>
     <img src={character.imageUrl} alt={character.name} />
     <button>{character.name}</button>
   </div>
 }
 
 export const CharacterListView = (props: { characters: Character[] }) => {
-  return <>
-    {props.characters.map(character => <CharacterView character={character} />)}
-  </>
+  return <div>
+    {props.characters.map(character => <CharacterView key={character._id} character={character} />)}
+  </div>
 }
