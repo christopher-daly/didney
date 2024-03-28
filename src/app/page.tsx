@@ -11,7 +11,7 @@ const Navigation = ({ previousPage, nextPage, onNavigate }: {
   onNavigate: (url: string) => void
 }) => {
 
-  return <div>
+  return <div className="flex gap-4 text-2xl font-bold">
     {previousPage && <button onClick={() => onNavigate(previousPage)}>Back</button>}
     {nextPage && <button onClick={() => onNavigate(nextPage)}>Next</button>}
   </div>
