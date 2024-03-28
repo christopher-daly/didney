@@ -11,7 +11,7 @@ describe("Home", () => {
 
     await waitFor(() => expect(characterGet).toHaveBeenCalledTimes(1))
 
-    expect(await screen.findByRole("button", { name: CHARACTER_PAGE_1.data[0].name })).toBeInTheDocument()
+    expect(await screen.findByRole("button", { name: new RegExp(CHARACTER_PAGE_1.data[0].name) })).toBeInTheDocument()
     expect(screen.queryByText("Loading...")).not.toBeInTheDocument()
   })
 
@@ -27,7 +27,7 @@ describe("Home", () => {
 
     await waitFor(() => expect(characterGet).toHaveBeenCalledTimes(2))
 
-    expect(await screen.findByRole("button", { name: CHARACTER_PAGE_2.data[0].name })).toBeInTheDocument()
+    expect(await screen.findByRole("button", { name: new RegExp(CHARACTER_PAGE_2.data[0].name) })).toBeInTheDocument()
     expect(screen.queryByText("Loading...")).not.toBeInTheDocument()
   })
 
@@ -40,13 +40,13 @@ describe("Home", () => {
     const backButton = await screen.findByRole("button", { name: "Back" })
     expect(backButton).toBeInTheDocument()
     fireEvent.click(backButton)
-    expect(await screen.findByRole("button", { name: CHARACTER_PAGE_1.data[0].name })).toBeInTheDocument()
+    expect(await screen.findByRole("button", { name: new RegExp(CHARACTER_PAGE_1.data[0].name) })).toBeInTheDocument()
   })
 
   it("shows character details when clicking character name", async () => {
     render(<Home />)
 
-    const characterButton = await screen.findByRole("button", { name: CHARACTER_PAGE_1.data[0].name })
+    const characterButton = await screen.findByRole("button", { name: new RegExp(CHARACTER_PAGE_1.data[0].name) })
 
     expect(screen.queryByTestId("detail-view")).not.toBeInTheDocument()
     fireEvent.click(characterButton)
@@ -58,7 +58,7 @@ describe("Home", () => {
   it("hides character details when clicking close", async () => {
     render(<Home />)
 
-    const characterButton = await screen.findByRole("button", { name: CHARACTER_PAGE_1.data[0].name })
+    const characterButton = await screen.findByRole("button", { name: new RegExp(CHARACTER_PAGE_1.data[0].name) })
 
     fireEvent.click(characterButton)
 
