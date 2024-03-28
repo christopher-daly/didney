@@ -1,5 +1,4 @@
 'use client'
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { GetCharactersApiResponse } from "@/types/api";
 import { CharacterListView } from "@/components/CharacterList";
@@ -15,7 +14,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {characterData && <CharacterListView characters={characterData?.data} />}
+      {characterData ? <CharacterListView characters={characterData?.data} /> : <div>Loading...</div>}
     </main>
   );
 }
