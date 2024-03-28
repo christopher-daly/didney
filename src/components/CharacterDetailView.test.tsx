@@ -1,6 +1,7 @@
 import { CharacterDetailView } from "@/components/CharacterDetailView";
 import { characterFixture } from "../../test/fixtures/character";
 import { render, screen } from "@testing-library/react";
+import { isArray } from "node:util";
 
 describe("CharacterDetailView", () => {
   const character = characterFixture()
@@ -16,10 +17,29 @@ describe("CharacterDetailView", () => {
     expect(screen.getByRole("img", {name: character.name})).toHaveAttribute("src", character.imageUrl)
   })
 
-  it("renders character allies", () => {
-    render(<CharacterDetailView character={character} />)
+  describe.each([
+    ['allies', 'Allies'],
+    ['enemies', 'Enemies'],
+    ['shortFilms', 'Short Films'],
+    ['tvShows', 'TV Shows'],
+    ['videoGames', 'Video Games'],
+    ['parkAttractions', 'Park Attractions'],
+  ])("%s", (objectProp, heading) => {
+    const descriptor = Object.getOwnPropertyDescriptor(character, objectProp)
+    const objectValue = descriptor?.value
 
-    expect(screen.getByRole("heading", {name: "Allies"})).toBeInTheDocument()
-    character.allies.forEach((ally => expect(screen.getByRole("listitem", {name: ally})).toBeInTheDocument()))
+    it(`renders when present`, () => {
+      render(<CharacterDetailView character={character} />)
+
+      expect(screen.getByRole("heading", {name: heading})).toBeInTheDocument()
+      objectValue.forEach(((prop: any) => expect(screen.getByRole("listitem", {name: prop})).toBeInTheDocument()))
+    })
+
+    it(`hides when absent`, () => {
+      const newCharacter = {...character, [objectProp]: []}
+      render(<CharacterDetailView character={newCharacter} />)
+
+      expect(screen.queryByRole("heading", {name: heading})).not.toBeInTheDocument()
+    })
   })
 })
