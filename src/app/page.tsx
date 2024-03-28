@@ -3,6 +3,18 @@ import { useEffect, useState } from "react";
 import { GetCharactersApiResponse } from "@/types/api";
 import { CharacterListView } from "@/components/CharacterList";
 
+const Navigation = ({ previousPage, nextPage, onNavigate }: {
+  previousPage?: string | null,
+  nextPage?: string | null,
+  onNavigate: (url: string) => void
+}) => {
+
+  return <div>
+    {previousPage && <button onClick={() => onNavigate(previousPage)}>Back</button>}
+    {nextPage && <button onClick={() => onNavigate(nextPage)}>Next</button>}
+  </div>
+}
+
 export default function Home() {
   const [pageUrl, setPageUrl] = useState<string>("https://api.disneyapi.dev/character")
   const [characterData, setCharacterData] = useState<GetCharactersApiResponse | null>(null)
@@ -18,18 +30,10 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       {characterData ? <CharacterListView characters={characterData?.data} /> : <div>Loading...</div>}
-      {characterData?.info.previousPage && <button onClick={() => {
-        if (characterData?.info.previousPage) {
-          setPageUrl(characterData?.info.previousPage);
-          setCharacterData(null)
-        }
-      }}>Back</button>}
-      {characterData?.info.nextPage && <button onClick={() => {
-        if (characterData?.info.nextPage) {
-          setPageUrl(characterData?.info.nextPage);
-          setCharacterData(null)
-        }
-      }}>Next</button>}
+      <Navigation onNavigate={(url: string) => {
+        setPageUrl(url);
+        setCharacterData(null)
+      }} nextPage={characterData?.info.nextPage} previousPage={characterData?.info.previousPage} />
     </main>
   );
 }
