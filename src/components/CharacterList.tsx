@@ -1,11 +1,14 @@
 import { Character } from "@/types/character";
 
-const Character = ({ character }: { character: Character }) => {
-  return <button key={character._id}>{character.name}</button>
+const CharacterView = ({ character }: { character: Character }) => {
+  return <div key={character._id}>
+    <img src={character.imageUrl} alt={character.name} />
+    <button>{character.name}</button>
+  </div>
 }
 
-export const CharacterList = (props: { characters: Character[] }) => {
+export const CharacterListView = (props: { characters: Character[] }) => {
   return <>
-    {props.characters.map(character => <Character character={character} />)}
+    {props.characters.map(character => <CharacterView character={character} />)}
   </>
 }
