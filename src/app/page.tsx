@@ -1,7 +1,8 @@
 'use client'
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { GetCharactersApiResponse } from "@/types/api";
 import { CharacterListView } from "@/components/CharacterList";
+import { Character } from "@/types/character";
 
 const Navigation = ({ previousPage, nextPage, onNavigate }: {
   previousPage?: string | null,
@@ -13,6 +14,12 @@ const Navigation = ({ previousPage, nextPage, onNavigate }: {
     {previousPage && <button onClick={() => onNavigate(previousPage)}>Back</button>}
     {nextPage && <button onClick={() => onNavigate(nextPage)}>Next</button>}
   </div>
+}
+
+const MainWrapper = (props: { children: ReactNode }) => {
+  return <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    {props.children}
+  </main>
 }
 
 export default function Home() {
@@ -27,13 +34,17 @@ export default function Home() {
     }
   }, [characterData]);
 
+  if (!characterData) return <MainWrapper>
+    <div>Loading...</div>
+  </MainWrapper>
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {characterData ? <CharacterListView characters={characterData?.data} /> : <div>Loading...</div>}
+    <MainWrapper>
+      <CharacterListView characters={characterData?.data} />
       <Navigation onNavigate={(url: string) => {
         setPageUrl(url);
         setCharacterData(null)
       }} nextPage={characterData?.info.nextPage} previousPage={characterData?.info.previousPage} />
-    </main>
+    </MainWrapper>
   );
 }
