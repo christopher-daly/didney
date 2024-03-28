@@ -18,7 +18,7 @@ const Navigation = ({ previousPage, nextPage, onNavigate }: {
 }
 
 const MainWrapper = (props: { children: ReactNode }) => {
-  return <main className="flex min-h-screen flex-col items-center justify-between p-24">
+  return <main className="flex min-h-screen flex-col items-center p-24 bg-gray-200">
     {props.children}
   </main>
 }

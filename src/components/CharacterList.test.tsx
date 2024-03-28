@@ -11,7 +11,7 @@ describe("CharacterList", () => {
     render(<CharacterListView characters={characters} onClick={onClick} />)
 
     characters.forEach(character => {
-      expect(screen.getByRole("button", {name: character.name})).toBeInTheDocument()
+      expect(screen.getByRole("button", {name: new RegExp(character.name)})).toBeInTheDocument()
       expect(screen.getByRole("img", {name: character.name})).toHaveAttribute("src", character.imageUrl)
     })
   })
@@ -20,7 +20,7 @@ describe("CharacterList", () => {
     const characterToSelect = characters[0]
     render(<CharacterListView characters={characters} onClick={onClick} />)
 
-    fireEvent.click(screen.getByRole("button", {name: characterToSelect.name}))
+    fireEvent.click(screen.getByRole("button", {name: new RegExp(characterToSelect.name)}))
 
     expect(onClick).toHaveBeenCalledWith(characterToSelect)
   })
