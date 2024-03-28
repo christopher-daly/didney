@@ -3,6 +3,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { GetCharactersApiResponse } from "@/types/api";
 import { CharacterListView } from "@/components/CharacterList";
 import { Character } from "@/types/character";
+import { CharacterDetailView } from "@/components/CharacterDetailView";
 
 const Navigation = ({ previousPage, nextPage, onNavigate }: {
   previousPage?: string | null,
@@ -25,6 +26,7 @@ const MainWrapper = (props: { children: ReactNode }) => {
 export default function Home() {
   const [pageUrl, setPageUrl] = useState<string>("https://api.disneyapi.dev/character")
   const [characterData, setCharacterData] = useState<GetCharactersApiResponse | null>(null)
+  const [shownCharacter, setShownCharacter] = useState<Character | null>(null)
 
   useEffect(() => {
     if (!characterData) {
@@ -34,13 +36,22 @@ export default function Home() {
     }
   }, [characterData]);
 
+  const selectCharacter = (selected: Character) => {
+    setShownCharacter(selected)
+  }
+
   if (!characterData) return <MainWrapper>
     <div>Loading...</div>
   </MainWrapper>
 
+  if (shownCharacter) return <MainWrapper>
+    <button onClick={() => setShownCharacter(null)}>Close</button>
+    <CharacterDetailView character={shownCharacter} />
+  </MainWrapper>
+
   return (
     <MainWrapper>
-      <CharacterListView characters={characterData?.data} />
+      <CharacterListView characters={characterData?.data} onClick={selectCharacter} />
       <Navigation onNavigate={(url: string) => {
         setPageUrl(url);
         setCharacterData(null)

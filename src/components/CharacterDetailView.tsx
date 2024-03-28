@@ -1,7 +1,7 @@
 import { Character } from "@/types/character";
 
-export const CharacterDetailView = ({ character }: {character: Character}) => {
-  return <div>
+export const CharacterDetailView = ({ character }: { character: Character}) => {
+  return <div data-testid="detail-view">
     <h2>{character.name}</h2>
     <img src={character.imageUrl} alt={character.name} />
     <div>
